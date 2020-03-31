@@ -25,7 +25,7 @@ end
 E(steps) = -(phi(steps-1)-phi(steps))/delta;
 
 figure(1)
-sgtitle("Approximation de \phi par la résolution d'un système linéaire")
+%sgtitle("Approximation de \phi par la résolution d'un système linéaire")
 subplot(2,1,1);
 plot(x,phi)
 title('\phi(x)')
