@@ -1,6 +1,8 @@
 clear; clf;
 
-steps = 1000;
+tic
+
+steps = 1000000;
 L = 20;
 
 h = @(x) sin(x); % E'
@@ -11,9 +13,9 @@ H = h(x(2:steps-1)');
 
 
 delta = x(2)-x(1);
-A = tridiag(steps-2);
-phi = [0 ; delta^-2*A\H ; 0]'; % Solution du systeme lineaire + conditions aux limites
-
+% A = tridiag(steps-2);
+% phi = [0 ; delta^-2*A\H ; 0]'; % Solution du systeme lineaire + conditions aux limites
+phi = quicksolve(H/(delta^-2));
 %y(0)=0 ; y(steps)=0; % Conditions aux limites
 
 
@@ -23,6 +25,8 @@ for i = 2:steps-1
     E(i) = (phi(i+1)-phi(i-1))/(2*delta);
 end
 E(steps) = -(phi(steps-1)-phi(steps))/delta;
+
+toc
 
 figure(1)
 %sgtitle("Approximation de \phi par la résolution d'un système linéaire")
