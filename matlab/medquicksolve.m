@@ -9,10 +9,10 @@ function [phi] = medquicksolve(b)
     for i=1:n
         s=0;
        for j=1:i
-           s = s - 1/8*(n+1-i)*j*b(j);
+           s = s - 1/(n+1)*(n+1-i)*j*b(j);
        end
        for j=i+1:n
-           s = s - 1/8*i*(n+1-j)*b(j);
+           s = s - 1/(n+1)*i*(n+1-j)*b(j);
        end
        phi(i+1)=s;
     end
