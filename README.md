@@ -16,4 +16,4 @@ Mise en évidence de l'amortissement Landau avec des méthodes numériques
 ## Work in Progress
 
 - Remplacer les B1Splines par des B3Splines dans le modèle
-- Remplacer le schéma d'euler explicite par les schéma RK4
+- Remplacer le schéma d'euler explicite par le schéma RK4
