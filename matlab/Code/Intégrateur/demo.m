@@ -20,3 +20,18 @@ title(["Graphe de y et de son approximation","Intégrateur RK4 avec dérivées s
 
 figure(2); % Graphe de l'erreur
 plot(t,y-yapprox);
+
+figure(3); % Erreur en fonction de n
+% Calcul numérique de l'odre de la méthode
+e = zeros(1,100);
+for n=30:130
+    t = linspace(0,L,n);
+    yapprox = rk4_d2nd(t,0,1,f);
+    y = yexact(t);
+    e(n-29) = max(abs(y-yapprox));
+end
+plot(log(30:130),log(e));
+p = polyfit(log(30:130),log(e),1);
+title("Logarithme de l'erreur en fonction du logarithme de n");
+xlabel("log(n)"); ylabel("log(e)");
+xlim([log(30),log(130)]);
