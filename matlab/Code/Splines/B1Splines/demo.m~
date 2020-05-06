@@ -1,0 +1,42 @@
+clear; clf;
+
+nx = 15;                            % Nombre de points d'interpolation
+nr = 1000;                          % Nombre de points pour le rendu des fonctions
+
+L = 2*pi;
+xaxis = [0 L];
+f = @(x) cos(x).*sin(2*x);
+
+
+figure(1); % Graphe de la fonction B1
+x = linspace(-2,2,nr);
+y = B1(x);
+plot(x,y);
+xlim([-2 2]);
+title("Graphe de la fonction B1");
+
+
+xi = linspace(xaxis(1),xaxis(2),nx); hx=xi(2)-xi(1);
+yi = f(xi);
+
+omega = hx*yi;
+
+x = linspace(xaxis(1),xaxis(2),nr);
+y = f(x);
+yapprox = interpB1(xi,omega,x);
+
+figure(2); hold on;% Graphe de la fonction f et son approximation
+plot(x,y,'DisplayName',"f(x)");
+plot(x,yapprox,'DisplayName',"fapprox(x)");
+scatter(xi,yi,'DisplayName',"Points d'interpolation");
+xlim(xaxis);
+legend();
+title(["Graphe de la fonction f et de son approximation","Méthode des B1-Splines"]);
+
+% Ajout des B1Splines qui composent l'approximation
+
+for i=1:nx
+    x = linspace(xi(i)-hx,xi(i)+hx,nr);
+    omega/h .* B1( (x(i)-xi(i))/h )
+end
+

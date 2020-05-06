@@ -1,0 +1,7 @@
+% Demo du solveur de systèmes linéaire Ax=b avec A une matrice tridiagonale
+% à coefficients constants
+
+clear; clf;
+
+b = cos(1:10)';
+x = t
