@@ -13,7 +13,7 @@ Mise en évidence de l'amortissement Landau avec des méthodes numériques
 
 ![](https://github.com/3700240/Amortissement-Landau/blob/master/img/ordrerk4.png)
 
-## WIP
+## Work in Progress
 
 - t
 - t
