@@ -24,7 +24,7 @@ np = nx*nv; % Nombre de particules
 % Parametres du double faisceau
 alpha = 10^(-3);
 k = 0.2;
-f0 = @(X,V) 1/(2*sqrt(pi)) *  (V.^2)  .*  exp((-V.^2)./2)  .*(1+alpha*cos(k*X));
+f0 = @(X,V) 1/(sqrt(2*pi)) *  (V.^2)  .*  exp((-V.^2)./2)  .*(1+alpha*cos(k*X));
 
 %%%%%%%%%%%%%%%%%%%
 % INITIALLISATION %
