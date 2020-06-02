@@ -22,7 +22,7 @@ f0 = @(X,V) g2(V).*g1(X);
 
 t = linspace(0,T,nt);  ht=t(2)-t(1);
 x = linspace(0,L,nx+1);  hx=x(2)-x(1);
-x = x(1:nx); % Pour ne pas avoir de doublons d'électrons sur les bords
+x = x(1:nx); % Pour ne pas avoir de doublons d'électrons sur
 v = linspace(-5,5,nv); hv=v(2)-v(1);
 
 
@@ -41,7 +41,7 @@ omega2  = calculPoids(v,g2);
 omega   = O1.*O2;
 omega   = omega(:); % Matrice -> Vecteur
 
-rho = rho3(x_E,[X-L;X;X+L],[omega;omega;omega],hx);
+rho = rho3(x_E,X,omega,hx);
 phi = tridiagsolver([1 -2 1],(1-rho)/(hx^-2)); 
 E = calcul_champ(phi,hx);
 
@@ -77,7 +77,7 @@ tic;
 for step=2:nt %% L'etape 1 est la condition initiale
     %X = mod(X+0.01,L); %V = V + (rand(size(V))-0.5)/100;
     
-    rho = rho3(x_E,[X-L;X;X+L],[omega;omega;omega],hx);
+    rho = rho3(x_E,X,omega,hx);
     phi = tridiagsolver([1 -2 1],(1-rho)/(hx^-2)); 
     E = calcul_champ(phi,hx);
     energie_elec(step)=norm(E);
