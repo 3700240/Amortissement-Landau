@@ -65,7 +65,7 @@ title("Champ electrique");
 xlabel("x");
 ylabel("E");
 
-pause(5)
+pause(1)
 %%%%%%%%%%%%%%%%%%%%%%
 % CORPS DU PROGRAMME %
 %%%%%%%%%%%%%%%%%%%%%%
