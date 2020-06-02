@@ -17,14 +17,14 @@ xaxis = [0 L];
 vaxis = [-5 5]; % v appartient à [-5,5]
 
 nt = 500; % Nombre de points pour la discretisation du temps
-nx = 100; % Nombre de points pour la discretisation de x
-nv = 100; % Nombre de points pour la discretisation de v
+nx = 50; % Nombre de points pour la discretisation de x
+nv = 50; % Nombre de points pour la discretisation de v
 np = nx*nv; % Nombre de particules
 
 % Parametres du double faisceau
 alpha = 10^(-3);
 k = 0.2;
-f0 = @(X,V) 1/(sqrt(2*pi)) *  (V.^2)  .*  exp((-V.^2)./2)  .*(1+alpha*cos(k*X));
+f0 = @(X,V) 1/(sqrt(2*pi)) *  exp((-V.^2)./2)  .*(1+alpha*cos(k*X));
 
 %%%%%%%%%%%%%%%%%%%
 % INITIALLISATION %
@@ -57,9 +57,9 @@ for cx=1:nx
 end
 
 omega = hx*hv*f0(X,V); % Calcul des poids pour une B1-Spline
-rho = rho1(x,X,omega,hx); % Calcul de rho0 (densité de particule)
-phi = diff_finies_solver((1-rho)/(hx^-2)); % calcul de Phi0
-E = calcul_champ(phi,hx); % Calcul des Ei0
+rho   = rho1(x,X,omega,hx); % Calcul de rho0 (densité de particule)
+phi   = diff_finies_solver((1-rho)/(hx^-2)); % calcul de Phi0
+E     = calcul_champ(phi,hx); % Calcul des Ei0
 energie_elec(1)=norm(E); % Energie electrique à t=0
 
 
