@@ -3,9 +3,9 @@ clear; clc; clf;
 T = 10;
 L = 4*pi;
 
-taxis = [0 T];  nt = 1000;
-xaxis = [0 L];  nx = 20;
-vaxis = [-5 5]; nv = 20;
+taxis = [0 T];  nt = 500;
+xaxis = [0 L];  nx = 50;
+vaxis = [-5 5]; nv = 50;
 
 ne = 100;  % Nombre de points pour le calcul du champs
 
