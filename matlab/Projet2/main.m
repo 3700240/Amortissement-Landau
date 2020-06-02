@@ -1,6 +1,6 @@
 clear; clc; clf;
 
-T = 20;
+T = 10;
 L = 4*pi;
 
 taxis = [0 T];  nt = 15000;
@@ -13,20 +13,20 @@ alpha = 10^(-3);
 k = 0.5;
 
 g1 = @(X) 1+alpha*cos(k*X);
-g2 = @(V) 1/(sqrt(2*pi)) *  exp((-V.^2)./2);
+g2 = @(V) 1/(sqrt(2*pi)) *  exp((-V.^2)./2) .* power(V,2); % Retirer le dernier membre pour l'amortissement Landau
 f0 = @(X,V) g2(V).*g1(X);
 
 %%%%%%%%%%%%%%%%%%%
 % INITIALLISATION %
 %%%%%%%%%%%%%%%%%%%
 
-t = linspace(0,T,nt);  ht=t(2)-t(1);
-x = linspace(0,L,nx+1);  hx=x(2)-x(1);
-x = x(1:nx); % Pour ne pas avoir de doublons d'électrons sur les bords
-v = linspace(-5,5,nv); hv=v(2)-v(1);
+t = linspace(taxis(1),taxis(2),nt);  ht=t(2)-t(1);
+x = linspace(xaxis(1),xaxis(2),nx+1);  hx=x(2)-x(1);
+x = x(1:nx); % Petite technique our ne pas avoir de doublons d'électrons sur les bords
+v = linspace(vaxis(1),vaxis(2),nv); hv=v(2)-v(1);
 
 
-x_E = linspace(0,L,100);
+x_E = linspace(xaxis(1),xaxis(2),100);
 
 energie_elec = zeros(1,nt); % Pour stocker ||E(t)||
 
@@ -41,7 +41,9 @@ omega2  = calculPoids(v,g2);
 omega   = O1.*O2;
 omega   = omega(:); % Matrice -> Vecteur
 
-rho = rho3(x_E,[X-L;X;X+L],[omega;omega;omega],hx);
+omegalong = [omega;omega;omega]; % Version de omega compatible avec la périodicité
+
+rho = rho3(x_E,[X-L;X;X+L],omegalong,hx); % On duplique X 2 fois pour simuler la périodicité
 phi = tridiagsolver([1 -2 1],(1-rho)/(hx^-2)); 
 E = calcul_champ(phi,hx);
 
@@ -50,15 +52,6 @@ energie_elec(1)=norm(E);
 % Zex  = f0(X,V);
 % Zapp = interpB3_2D(X,V,omega,hx,hv,X,V);
 % scatter3(X,V,abs(Zex-Zapp));
-
-% Figure 1 : Positions et vitesses initiales des particules
-figure(1);
-scatter(X,V)
-xlim(xaxis);
-ylim(vaxis);
-title("Positions et vitesses initiales");
-xlabel("x");
-ylabel("v");
 
 % Figure 2 : Champ electrique
 figure(2);
@@ -77,7 +70,7 @@ tic;
 for step=2:nt %% L'etape 1 est la condition initiale
     %X = mod(X+0.01,L); %V = V + (rand(size(V))-0.5)/100;
     
-    rho = rho3(x_E,[X-L;X;X+L],[omega;omega;omega],hx);
+    rho = rho3(x_E,[X-L;X;X+L],omegalong,hx);
     phi = tridiagsolver([1 -2 1],(1-rho)/(hx^-2)); 
     E = calcul_champ(phi,hx);
     energie_elec(step)=norm(E);
@@ -88,20 +81,7 @@ for step=2:nt %% L'etape 1 est la condition initiale
     X = mod(X + V*ht,L);
     
     
-    if mod(step,1000)==0 % Remapping
-        
-        %         figure(1);
-        %         scatter(X,V)
-        %         
-        %         figure(2);
-        %         plot(x,rho);
-        %         
-        %         figure(3);
-        %         plot(x,phi);
-        %         
-        %         figure(4);
-        %         plot(x,E);
-
+    if mod(step,1000)==0 % Remapping a ajouter
 
         % Figure 1 : Positions et vitesses initiales des particules
         figure(1);
@@ -131,7 +111,7 @@ figure(3); % Energie electrique au cours du temps
 plot(t,energie_elec);
 title("Energie electrique au cours du temps");
 xlabel("t");
-ylabel("$E$");
+ylabel("E");
 
     
     
