@@ -84,9 +84,7 @@ tic;
 
 vid1 = VideoWriter('video.avi');
 vid1.FrameRate = 60;
-
 open(vid1);
-
 hFig = figure(1);
 hFig.WindowState = 'maximized';
 

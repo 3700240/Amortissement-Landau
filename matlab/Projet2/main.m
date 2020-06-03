@@ -15,7 +15,7 @@ alpha = 10^(-3);
 k = 0.5;
 
 g1 = @(X) 1+alpha*cos(k*X);
-g2 = @(V) 1/(sqrt(2*pi)) * exp((-V.^2)./2); %.* power(V,2); % Retirer le dernier membre pour l'amortissement Landau
+g2 = @(V) 1/(sqrt(2*pi)) * exp((-V.^2)./2);%.* power(V,2); % Retirer le dernier membre pour l'amortissement Landau
 f0 = @(X,V) g2(V).*g1(X);
 
 %%%%%%%%%%%%%%%%%%%
@@ -57,6 +57,19 @@ tic;
 FF = f_reconstruite(X,V,XX,VV,omegalong,L);
 
 maxini = 0;
+maxini2 = 0;
+
+vid1 = VideoWriter('video.avi');
+vid1.FrameRate = 20;
+open(vid1);
+
+figure(1);
+width=1280;
+height=600;
+set(gcf,'position',[0,0,width,height]);
+
+
+pause(5);
 
 for step=2:nt %% L'etape 1 est la condition initiale
     
@@ -72,17 +85,13 @@ for step=2:nt %% L'etape 1 est la condition initiale
     V = V - ht*EX;
     X = mod(X + V*ht,L);
     
-    
     if mod(step,50)==0
         FF = f_reconstruite(X,V,XX,VV,omegalong,L);
     end
     
     if mod(step,3)==0 % Remapping a ajouter
         
-        hFig = figure(1);
-        width=1280;
-        height=600;
-        set(gcf,'position',[0,0,width,height]);
+        figure(1);
         tiledlayout(2,2)
         
         % Figure 2 : Champ electrique
@@ -107,30 +116,37 @@ for step=2:nt %% L'etape 1 est la condition initiale
         ylabel("|E|");
         
         nexttile
-        sc = scatter(X,V,'filled');
+        plot(x_E,phi);
+        m = max(abs(phi));
+        if m>maxini2
+           maxini2 = m; 
+        end
+        ylim([-maxini2,maxini2]);
         xlim(xaxis);
-        ylim(vaxis*1.2);
-        title("Parametres des particules");
+        title("Phi");
         xlabel("x");
-        ylabel("v");
+        ylabel("phi");
       
         
         nexttile
         su = surf(XX,VV,FF);
         su.EdgeColor = 'none';
-        title("Densit� de particules reconstruite");
+        title("Densite de particules reconstruite");
         xlabel("x");
         ylabel("v");
         xlim(xaxis);
         ylim(vaxis);
         view(2);
+        
+        
+        writeVideo(vid1, getframe(gcf))
+        
     end
 
     % Affichage de l'etape en cours
     if mod(step,nt/20)==2 || step==nt, fprintf('Etape: %d/%d - %5.1f%% termine\n', step, nt,step*100.0/nt), end
 end
     
-    
-    
-    
+close(vid1);
+
 toc;
