@@ -1,11 +1,9 @@
-function [FF] = f_reconstruite(X,V,XX,VV,omega,L)
+function [FF] = f_reconstruite(X,V,XX,VV,omegalong,L)
 
 nvv = size(XX,1);
 nxx = size(VV,2);
 
 FF = zeros(size(XX));
-
-omegalong = [omega;omega;omega];
 
 X = [X-L;X;X+L];
 V = [V; V; V];
